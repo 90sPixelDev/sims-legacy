@@ -14,7 +14,7 @@
 		<script src="familytree.js"></script>
 		<script>
 			FamilyTree.templates.base.defs = `<g transform="matrix(0.05,0,0,0.05,-12,-9)" id="heart">
-			     <path fill="red" d="M438.482,58.61c-24.7-26.549-59.311-41.655-95.573-41.711c-36.291,0.042-70.938,15.14-95.676,41.694l-8.431,8.909 l-8.431-8.909C181.284,5.762,98.663,2.728,45.832,51.815c-2.341,2.176-4.602,4.436-6.778,6.778 c-52.072,56.166-52.072,142.968,0,199.134l187.358,197.581c6.482,6.843,17.284,7.136,24.127,0.654 c0.224-0.212,0.442-0.43,0.654-0.654l187.29-197.581C490.551,201.567,490.551,114.77,438.482,58.61z"/>
+			     <path d="M438.482,58.61c-24.7-26.549-59.311-41.655-95.573-41.711c-36.291,0.042-70.938,15.14-95.676,41.694l-8.431,8.909 l-8.431-8.909C181.284,5.762,98.663,2.728,45.832,51.815c-2.341,2.176-4.602,4.436-6.778,6.778 c-52.072,56.166-52.072,142.968,0,199.134l187.358,197.581c6.482,6.843,17.284,7.136,24.127,0.654 c0.224-0.212,0.442-0.43,0.654-0.654l187.29-197.581C490.551,201.567,490.551,114.77,438.482,58.61z"/>
 			     </g>
 			`;
 
@@ -28,7 +28,7 @@
 			FamilyTree.templates.sim.field_0 =
 				'<text ' +
 				FamilyTree.attr.width +
-				' ="180" style="font-size: 20px;font-weight:bold;" fill="black" x="105" y="26" text-anchor="left" data-text-overflow="ellipsis" >{val}</text>';
+				'="195" style="font-size: 20px;font-weight:bold;" fill="black" x="105" y="26" text-anchor="left" data-text-overflow="ellipsis" >{val}</text>';
 
 			FamilyTree.templates.sim.link =
 				'<path stroke="#000" stroke-width="3px" fill="none" data-l-id="[{id}][{child-id}]" d="M{xa},{ya} C{xb},{yb} {xc},{yc} {xd},{yd}" />';
@@ -186,13 +186,38 @@
 			});
 
 			family.on('render-link', function (sender, args) {
-				if (args.cnode.ppid != undefined) {
+				var cnodeData = family.get(args.cnode.id);
+				var nodeData = family.get(args.node.id);
+
+				if (
+					args.cnode.ppid != undefined &&
+					cnodeData.married == undefined &&
+					nodeData.married == undefined
+				) {
 					args.html +=
-						'<use xlink:href="#heart" x="' +
+						'<use xlink:href="#heart" fill="blue" x="' +
 						args.p.xa +
 						'" y="' +
 						args.p.ya +
 						'"/>';
+				} else if (args.cnode.ppid != undefined) {
+					args.html +=
+						'<use xlink:href="#heart" fill="red" x="' +
+						args.p.xa +
+						'" y="' +
+						args.p.ya +
+						'"/>';
+				} else if (
+					cnodeData.divorced != undefined &&
+					nodeData.divorced != undefined &&
+					cnodeData.divorced.includes(args.node.id) &&
+					nodeData.divorced.includes(args.cnode.id)
+				) {
+					// console.log(args.html);
+					args.html = args.html.replace(
+						'path',
+						"path stroke-dasharray='4, 3' stroke='#000'"
+					);
 				}
 			});
 
@@ -200,6 +225,7 @@
 				{
 					id: 1,
 					pids: [3],
+					divorced: [3],
 					gender: 'male',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Zeph Daniels',
@@ -209,6 +235,7 @@
 				{
 					id: 2,
 					pids: [3],
+					married: [3],
 					gender: 'male',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Rowan Annable',
@@ -218,6 +245,8 @@
 				{
 					id: 3,
 					pids: [1, 2],
+					married: [2],
+					divorced: [1],
 					gender: 'female',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Laura Shepherd',
@@ -243,6 +272,7 @@
 					mid: 2,
 					fid: 3,
 					pids: [7],
+					lovers: [7],
 					gender: 'female',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Tyler Heath',
@@ -254,6 +284,7 @@
 					pids: [6],
 					mid: 5,
 					fid: 4,
+					lovers: [6],
 					gender: 'male',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Samson Stokes',

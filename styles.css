@@ -68,3 +68,28 @@ body {
 #tree > svg {
 	background-color: #e3ffe3;
 }
+
+svg.sim .node.werewolf rect {
+	fill: #fff9c2;
+	stroke: #4a4a3a;
+}
+svg.sim .node.human rect {
+	fill: #e3e3e3;
+	stroke: #4a4a3a;
+}
+svg.sim .node.plantsim rect {
+	fill: #97cf9f;
+	stroke: #5c6e5e;
+}
+svg.sim .node.spellcaster rect {
+	fill: #d7c2ff;
+	stroke: #83778f;
+}
+svg.sim .node.vampire rect {
+	fill: #e0e0e0;
+	stroke: #747f8f;
+}
+svg.sim .node.mermaid rect {
+	fill: #bfd7ff;
+	stroke: #4a4a3a;
+}

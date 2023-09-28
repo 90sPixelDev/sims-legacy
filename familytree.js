@@ -194,7 +194,7 @@ var FamilyTree = function (e, t) {
 		mouseScrool: FamilyTree.action.zoom,
 		showXScroll: FamilyTree.none,
 		showYScroll: FamilyTree.none,
-		template: 'ana',
+		template: 'polina',
 		tags: {},
 		min: !1,
 		nodeBinding: {},

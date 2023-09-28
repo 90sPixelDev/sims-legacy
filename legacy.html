@@ -18,28 +18,52 @@
 			     </g>
 			`;
 
+			const minIcon =
+				'<line x1="100" y1="50" x2="300" y2="50" stroke-width="1.5" stroke="black"></line>';
+
 			// CUSTOM TEMPLATE DECLARATION
 			FamilyTree.templates.sim = Object.assign(
 				{},
 				FamilyTree.templates.base
 			);
-			FamilyTree.templates.sim.defs = '';
 
 			FamilyTree.templates.sim.field_0 =
 				'<text ' +
 				FamilyTree.attr.width +
 				'="195" style="font-size: 20px;font-weight:bold;" fill="black" x="105" y="26" text-anchor="left" data-text-overflow="ellipsis" >{val}</text>';
 
-			FamilyTree.templates.sim.link =
-				'<path stroke="#000" stroke-width="3px" fill="none" data-l-id="[{id}][{child-id}]" d="M{xa},{ya} C{xb},{yb} {xc},{yc} {xd},{yd}" />';
+			// FamilyTree.templates.sim.link =
+			// 	'<path stroke="#000" stroke-width="3px" fill="none" data-l-id="[{id}][{child-id}]" d="M{xa},{ya} C{xb},{yb} {xc},{yc} {xd},{yd}" />';
+
+			FamilyTree.elements.descTextArea = function (
+				data,
+				editElement,
+				minWidth,
+				readOnly
+			) {
+				var id = FamilyTree.elements.generateId();
+				var value = data[editElement.binding];
+				if (value == undefined) value = '';
+				if (readOnly && !value) {
+					return {
+						html: '',
+					};
+				}
+				var rOnlyAttr = readOnly ? 'readonly' : '';
+				var rDisabledAttr = readOnly ? 'disabled' : '';
+				return {
+					html: `<label for="${id}">${editElement.label}</label>
+			                   <textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="width: 100%;height: 100px;resize:none;" data-binding="${editElement.binding}">${value}</textarea>`,
+					id: id,
+					value: value,
+				};
+			};
 
 			// CUSTOM TEMPLATE PART DEFINITIONS
 			FamilyTree.templates.sim.size = [325, 100];
-			// FamilyTree.templates.sim.node = '<rect width="300" height="100" fill="#bfe3bf" />';
 			FamilyTree.templates.sim.node =
-				'<rect x="0" y="0" height="100" width="100" fill="darkseagreen" stroke-width="3" stroke="darkgreen" rx="5" ry="5"></rect>' +
-				'<rect x="0" y="0" height="30" width="{w}" fill="#fff" stroke-width="1" stroke="darkgreen" rx="5" ry="5"></rect>' +
-				'<line x1="0" y1="30" x2="298.5" y2="30" stroke-width="5" stroke="darkseagreen"></line>';
+				'<rect x="0" y="0" height="{h}" width="{w}" rx="5" ry="5"></rect>' +
+				'<line x1="0" y1="20" x2="322.5" y2="20" stroke-width="35" stroke="#fff"></line>';
 
 			FamilyTree.templates.sim.img_0 = `
 				<line x1="100" y1="0" x2="100" y2="100" stroke-width="1.5" stroke="black"></line>
@@ -53,18 +77,50 @@
 				FamilyTree.templates.sim
 			);
 			FamilyTree.templates.sim_male.node =
-				'<rect x="0" y="0" height="{h}" width="{w}" fill="darkseagreen" stroke-width="3" stroke="darkgreen" rx="5" ry="5"></rect>' +
-				'<rect x="0" y="0" height="40" width="{w}" fill="#fff" stroke-width="1" stroke="darkgreen" rx="5" ry="5"></rect>' +
-				'<line x1="1.5" y1="40" x2="322.5" y2="40" stroke-width="5" stroke="darkseagreen"></line>';
+				'<rect x="0" y="0" height="{h}" width="{w}" rx="5" ry="5"></rect>' +
+				'<line x1="0" y1="20" x2="322.5" y2="20" stroke-width="35" stroke="#fff"></line>';
 
+			/// FEMALE
 			FamilyTree.templates.sim_female = Object.assign(
 				{},
 				FamilyTree.templates.sim
 			);
+
 			FamilyTree.templates.sim_female.node =
-				'<rect x="0" y="0" height="{h}" width="{w}" fill="darkseagreen" stroke-width="3" stroke="darkgreen" rx="5" ry="5"></rect>' +
-				'<rect x="0" y="0" height="40" width="{w}" fill="#fff" stroke-width="1" stroke="darkgreen" rx="5" ry="5"></rect>' +
-				'<line x1="1.5" y1="40" x2="322.5" y2="40" stroke-width="5" stroke="darkseagreen"></line>';
+				'<rect x="0" y="0" height="{h}" width="{w}" rx="5" ry="5"></rect>' +
+				'<line x1="0" y1="20" x2="322.5" y2="20" stroke-width="35" stroke="#fff"></line>';
+
+			FamilyTree.templates.sim_mermaid_female = Object.assign(
+				{},
+				FamilyTree.templates.sim
+			);
+
+			FamilyTree.templates.sim.min = Object.assign(
+				{},
+				FamilyTree.templates.sim
+			);
+			FamilyTree.templates.sim.min.size = [103, 103];
+			FamilyTree.templates.sim.min.img_0 = `
+				<clipPath id="ulaImg">
+						<rect width="100" height="100" x="0" y="0"></rect>
+				</clipPath>
+				<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="5" y="5" width="100" height="100"></image>`;
+
+			FamilyTree.templates.sim.min.field_0 = '';
+			FamilyTree.templates.sim.min.field_1 = '';
+
+			FamilyTree.templates.sim_male.min = Object.assign(
+				{},
+				FamilyTree.templates.sim.min
+			);
+			FamilyTree.templates.sim_male.min.node =
+				'<rect x="0" y="0" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>';
+			FamilyTree.templates.sim_female.min = Object.assign(
+				{},
+				FamilyTree.templates.sim.min
+			);
+			FamilyTree.templates.sim_female.min.node =
+				'<rect x="0" y="0" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>';
 
 			// RIPPLE
 			FamilyTree.templates.sim.ripple = {
@@ -93,18 +149,58 @@
 
 			editForm.prototype.hide = function (showldUpdateTheNode) {};
 
-			const family = new FamilyTree(document.getElementById('tree'), {
+			function minimzeNode(nodeId) {
+				const nodeData = family.getNode(nodeId);
+				if (nodeData.min) {
+					family.maximize(nodeId);
+				} else {
+					family.minimize(nodeId);
+				}
+			}
+
+			const family = new FamilyTree('#tree', {
 				// orientation: FamilyTree.orientation.left,
+				state: {
+					name: 'SimTree101',
+					readFromLocalStorage: true,
+					writeToLocalStorage: true,
+				},
 				mouseScrool: FamilyTree.action.zoom,
 				mode: 'light',
 				template: 'sim',
 				roots: [3],
+				partnerChildrenSplitSeparation: 100,
+				levelSeparation: 100,
+				sticky: false,
+				// min: true,
+				scaleInitial: FamilyTree.match.boundary,
 				// miniMap: true,
-				nodeTreeMenu: true,
+				// nodeTreeMenu: false,
+				menu: {
+					svg: { text: 'Export SVG' },
+					csv: { text: 'Export CSV' },
+					//   myMenuItem: {text:"My node menu Item", onClick: function {}}
+				},
+				nodeMenu: {
+					edit: {
+						icon: FamilyTree.icon.edit(24, 24, '#fff'),
+						text: 'Edit',
+						hideIfEditMode: true,
+						hideIfDetailsMode: false,
+					},
+				},
+				toolbar: {
+					// layout: true,
+					zoom: true,
+					fit: true,
+					// expandAll: true,
+					fullScreen: true,
+				},
 				nodeBinding: {
 					field_0: 'name',
-					field_1: 'lifestate',
+					field_1: 'liefstate',
 					field_2: 'traits',
+					field_3: 'desc',
 					img_0: 'photo',
 				},
 				// editUI: new editForm(),
@@ -141,8 +237,8 @@
 										text: 'Vampire',
 									},
 									{
-										value: 'wereworlf',
-										text: 'Wereworlf',
+										value: 'werewolf',
+										text: 'Werewolf',
 									},
 									{ value: 'alien', text: 'Alien' },
 									{
@@ -175,6 +271,13 @@
 							label: 'Traits',
 							binding: 'traits',
 						},
+						[
+							{
+								type: 'descTextArea',
+								label: 'Description:',
+								binding: 'desc',
+							},
+						],
 						{
 							type: 'textbox',
 							label: 'Photo Url',
@@ -188,6 +291,11 @@
 			family.on('render-link', function (sender, args) {
 				var cnodeData = family.get(args.cnode.id);
 				var nodeData = family.get(args.node.id);
+
+				args.html = args.html.replace(
+					'path',
+					"path stroke='#000' stroke-width='1'"
+				);
 
 				if (
 					args.cnode.ppid != undefined &&
@@ -213,12 +321,20 @@
 					cnodeData.divorced.includes(args.node.id) &&
 					nodeData.divorced.includes(args.cnode.id)
 				) {
-					// console.log(args.html);
 					args.html = args.html.replace(
 						'path',
-						"path stroke-dasharray='4, 3' stroke='#000'"
+						"path stroke-dasharray='10, 5' stroke='#000'"
 					);
 				}
+			});
+
+			family.on('click', function (sender, args) {
+				if (args.node.min) {
+					sender.maximize(args.node.id);
+				} else {
+					sender.minimize(args.node.id);
+				}
+				return false;
 			});
 
 			family.load([
@@ -230,6 +346,7 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Zeph Daniels',
 					lifestate: 'human',
+					tags: ['human'],
 					traits: ['stubborn'],
 				},
 				{
@@ -239,7 +356,8 @@
 					gender: 'male',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Rowan Annable',
-					lifestate: 'vampire',
+					lifestate: 'plantsim',
+					tags: ['plantsim'],
 					traits: ['stubborn'],
 				},
 				{
@@ -250,7 +368,8 @@
 					gender: 'female',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Laura Shepherd',
-					lifestate: 'alien',
+					lifestate: 'spellcaster',
+					tags: ['spellcaster'],
 					traits: ['stubborn'],
 				},
 				{
@@ -264,8 +383,10 @@
 					pids: [4],
 					name: 'Lois Sowle',
 					gender: 'female',
-					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					traits: ['stubborn'],
+					lifestate: 'spellcaster',
+					tags: ['spellcaster'],
+					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 				},
 				{
 					id: 6,
@@ -274,10 +395,11 @@
 					pids: [7],
 					lovers: [7],
 					gender: 'female',
-					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Tyler Heath',
-					lifestate: 'plantsim',
+					lifestate: 'vampire',
+					tags: ['vampire'],
 					traits: ['stubborn'],
+					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 				},
 				{
 					id: 7,
@@ -286,10 +408,11 @@
 					fid: 4,
 					lovers: [6],
 					gender: 'male',
-					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Samson Stokes',
-					lifestate: 'werewolf',
+					lifestate: 'plantsim',
+					tags: ['plantsim'],
 					traits: ['stubborn'],
+					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 				},
 				{
 					id: 8,
@@ -298,7 +421,19 @@
 					gender: 'female',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					name: 'Celeste Castillo De la Riva Ontaira',
-					lifestate: 'ghost',
+					lifestate: 'mermaid',
+					tags: ['mermaid'],
+					traits: ['stubborn'],
+				},
+				{
+					id: 9,
+					mid: 7,
+					fid: 6,
+					gender: 'female',
+					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
+					name: 'Loca',
+					lifestate: 'werewolf',
+					tags: ['werewolf'],
 					traits: ['stubborn'],
 				},
 			]);

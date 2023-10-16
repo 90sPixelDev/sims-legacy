@@ -10,72 +10,37 @@ body {
 	padding: 0;
 	width: 100vw;
 	height: 100vh;
-	background-color: darkseagreen;
-	/* background-image: url('plum.png'); */
-	background-attachment: scroll;
-	background-size: 75px;
-	/* cursor: not-allowed; */
 }
-
-#simsTree {
-	display: block;
-	position: absolute;
-	transform-origin: center;
-	width: 20000px;
-	height: 20000px;
-	transform: translate(-50%, -50%);
-	z-index: 9;
-	cursor: move;
-	border: 5px solid red;
-
-	transition: transform 330ms ease-in-out;
-	/* zoom: 15%; */
-}
-
-/* .root-node {
-	transform: translate(5000px, 5000px);
-} */
-
-.node {
-	position: absolute;
-	display: flex;
-	flex-direction: row;
-	height: 90px;
-	width: 300px;
-	padding: 5px;
-	background-color: white;
-
-	> .node-portrait {
-		max-width: 90px;
-		width: 100%;
-		height: 90px;
-		margin-top: auto;
-		margin-bottom: auto;
-		background-size: contain;
-		background-attachment: fit;
-		background-image: url('portraits/0.png');
-	}
-	> .node-info {
-		margin-left: 5px;
-	}
-}
-
-/* #simsCanvas {
-	display: block;
-	background-color: darkseagreen;
-} */
 
 #tree > svg {
 	background-color: #e3ffe3;
 }
 
+/* The Search Bar */
+div.bft-light .bft-input > input {
+	border-color: lightgreen;
+}
+div.bft-light .bft-input > input:focus {
+	border: 2px solid green;
+}
+.bft-light .bft-input > label.focused,
+.bft-dark .bft-input > label.focused {
+	color: green !important;
+}
+.bft-light .bft-search [data-search-item-id]:hover,
+.bft-light .bft-search [data-selected='yes'] {
+	background-color: green !important;
+	color: #000;
+}
+
+/* The colors of the node by lifestates */
 svg.sim .node.werewolf rect {
 	fill: #fff9c2;
 	stroke: #4a4a3a;
 }
 svg.sim .node.human rect {
-	fill: #e3e3e3;
-	stroke: #4a4a3a;
+	fill: #c3ebd4;
+	stroke: #5f826e;
 }
 svg.sim .node.plantsim rect {
 	fill: #97cf9f;
@@ -86,10 +51,131 @@ svg.sim .node.spellcaster rect {
 	stroke: #83778f;
 }
 svg.sim .node.vampire rect {
-	fill: #e0e0e0;
+	fill: #c4c4c4;
 	stroke: #747f8f;
 }
 svg.sim .node.mermaid rect {
 	fill: #bfd7ff;
-	stroke: #4a4a3a;
+	stroke: #8b9bb7;
+}
+svg.sim .node.ghost rect {
+	fill: #ebebeb;
+	stroke: #b8b8b8;
+}
+svg.sim .node.alien rect {
+	fill: #ffccf6;
+	stroke: #825f7c;
+}
+svg.sim .node.werewolf.widow {
+	filter: brightness(60%);
+	rect {
+		stroke: #000;
+		stroke-width: 5px;
+	}
+}
+svg.sim .node.human.widow {
+	filter: brightness(60%);
+	& rect {
+		stroke: #000;
+		stroke-width: 5px;
+	}
+}
+svg.sim .node.plantsim.widow {
+	filter: brightness(60%);
+	& rect {
+		stroke: #000;
+		stroke-width: 5px;
+	}
+}
+svg.sim .node.spellcaster.widow {
+	filter: brightness(60%);
+	& rect {
+		stroke: #000;
+		stroke-width: 5px;
+	}
+}
+svg.sim .node.vampire.widow {
+	filter: brightness(60%);
+	& rect {
+		stroke: #000;
+		stroke-width: 5px;
+	}
+}
+svg.sim .node.mermaid.widow {
+	filter: brightness(60%);
+	& rect {
+		stroke: #000;
+		stroke-width: 5px;
+	}
+}
+svg.sim .node.ghost.widow {
+	filter: brightness(60%);
+	& rect {
+		stroke: #000;
+		stroke-width: 5px;
+	}
+}
+svg.sim .node.alien.widow {
+	filter: brightness(60%);
+	& rect {
+		stroke: #000;
+		stroke-width: 5px;
+	}
+}
+
+.bft-edit-form.werewolf .bft-edit-form-header,
+.bft-edit-form.werewolf .bft-img-button {
+	background-color: #fff9c2 !important;
+	.bft-edit-form-title {
+		color: #4a4a3a;
+	}
+}
+.bft-edit-form.human .bft-edit-form-header,
+.bft-edit-form.human .bft-img-button {
+	background-color: #c3ebd4 !important;
+	.bft-edit-form-title {
+		color: #5f826e;
+	}
+}
+.bft-edit-form.plantsim .bft-edit-form-header,
+.bft-edit-form.plantsim .bft-img-button {
+	background-color: #97cf9f !important;
+	.bft-edit-form-title {
+		color: #5c6e5e;
+	}
+}
+.bft-edit-form.spellcaster .bft-edit-form-header,
+.bft-edit-form.spellcaster .bft-img-button {
+	background-color: #d7c2ff !important;
+	.bft-edit-form-title {
+		color: #83778f;
+	}
+}
+.bft-edit-form.vampire .bft-edit-form-header,
+.bft-edit-form.vampire .bft-img-button {
+	background-color: #c4c4c4 !important;
+	.bft-edit-form-title {
+		color: #747f8f;
+	}
+}
+.bft-edit-form.mermaid .bft-edit-form-header,
+.bft-edit-form.mermaid .bft-img-button {
+	background-color: #bfd7ff !important;
+	.bft-edit-form-title {
+		color: #8b9bb7;
+	}
+}
+.bft-edit-form.ghost .bft-edit-form-header,
+.bft-edit-form.ghost .bft-img-button {
+	background-color: #ebebeb !important;
+	.bft-edit-form-title {
+		color: #b8b8b8;
+	}
+}
+.bft-edit-form.alien .bft-edit-form-header,
+.bft-edit-form.alien .bft-img-button {
+	background-color: #ffccf6 !important;
+	.bft-edit-form-title {
+		color: #825f7c;
+	}
 }

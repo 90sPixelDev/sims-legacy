@@ -21,7 +21,7 @@
 
 							<path id="female" d="M20 9C20 13.0803 16.9453 16.4471 12.9981 16.9383C12.9994 16.9587 13 16.9793 13 17V19H14C14.5523 19 15 19.4477 15 20C15 20.5523 14.5523 21 14 21H13V22C13 22.5523 12.5523 23 12 23C11.4477 23 11 22.5523 11 22V21H10C9.44772 21 9 20.5523 9 20C9 19.4477 9.44772 19 10 19H11V17C11 16.9793 11.0006 16.9587 11.0019 16.9383C7.05466 16.4471 4 13.0803 4 9C4 4.58172 7.58172 1 12 1C16.4183 1 20 4.58172 20 9ZM6.00365 9C6.00365 12.3117 8.68831 14.9963 12 14.9963C15.3117 14.9963 17.9963 12.3117 17.9963 9C17.9963 5.68831 15.3117 3.00365 12 3.00365C8.68831 3.00365 6.00365 5.68831 6.00365 9Z"</path>
 
-								<svg width="64px" height="64px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke-width="3" stroke="#000000" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><circle cx="19.4" cy="11.54" r="5.91" stroke-linecap="round"></circle><path d="M12.88,54.49V41.89a2.24,2.24,0,0,0-.73-1.64l-2.19-2a1.12,1.12,0,0,1-.37-.82v-13a2.2,2.2,0,0,1,2.21-2.2H25.89a3.31,3.31,0,0,1,3.31,3.3v12a1.09,1.09,0,0,1-.3.75l-2.12,2.26a2.19,2.19,0,0,0-.6,1.5V54.49" stroke-linecap="round"></path><circle cx="44.6" cy="11.54" r="5.91" stroke-linecap="round"></circle><path d="M38.09,54.49V41.89a2.24,2.24,0,0,0-.73-1.64l-2.19-2a1.12,1.12,0,0,1-.37-.82v-13A2.2,2.2,0,0,1,37,22.22H51.1a3.31,3.31,0,0,1,3.31,3.3v12a1.09,1.09,0,0,1-.3.75L52,40.54a2.19,2.19,0,0,0-.6,1.5V54.49" stroke-linecap="round"></path></g></svg>
+							<g  stroke-linecap="round" stroke-linejoin="round"></g><g id="diamond" transform="matrix(0.05,0,0,0.05,-12,-13)"><polygon points="256,0 72.115,256 256,512 439.885,256 "></polygon></g>
 						`;
 
 			// CUSTOM TEMPLATE DECLARATION
@@ -263,20 +263,18 @@
 				'<circle fill="rgb(0, 90, 0)" cx="120" cy="120" r="30" />' +
 				'</g></g>';
 
-			function minimzeNode(node, all) {
-				// const nodeData = family.getNode(nodeId);
-				if (all) {
-					if (node.min) {
-						family.maximize(node);
-					} else {
-						family.minimize(node);
-					}
+			function minimizeNodes() {
+				family.minimize();
+			}
+			function maximizeNodes() {
+				family.maximize();
+			}
+
+			function minMaxNode(node) {
+				if (node.min) {
+					family.maximize(node.id);
 				} else {
-					if (node.min) {
-						family.maximize(node.id);
-					} else {
-						family.minimize(node.id);
-					}
+					family.minimize(node.id);
 				}
 			}
 
@@ -302,7 +300,7 @@
 				// min: true,
 				scaleInitial: FamilyTree.match.boundary,
 				// miniMap: true,
-				// nodeTreeMenu: true,
+				nodeTreeMenu: true,
 				menu: {
 					json: { text: '[SAVE] Sim Tree' },
 					importJSON: {
@@ -310,15 +308,14 @@
 						icon: FamilyTree.icon.json(24, 24, 'red'),
 						onClick: importJSONHandler,
 					},
-					//   myMenuItem: {text:"My node menu Item", onClick: function {}}
 				},
-				nodeCircleMenu: {
-					child: {
-						icon: FamilyTree.icon.teddy(30, 30, '#aeaeae'),
-						text: 'Add child',
-						color: 'white',
-					},
-				},
+				// nodeCircleMenu: {
+				// 	child: {
+				// 		icon: FamilyTree.icon.teddy(30, 30, '#aeaeae'),
+				// 		text: 'Add child',
+				// 		color: 'white',
+				// 	},
+				// },
 				nodeMenu: {
 					details: {
 						text: 'Details',
@@ -329,6 +326,14 @@
 						text: 'Edit',
 						hideIfEditMode: true,
 						hideIfDetailsMode: false,
+					},
+					minNode: {
+						text: 'Minimize All Nodes',
+						onClick: minimizeNodes,
+					},
+					maxNode: {
+						text: 'Maximize All Nodes',
+						onClick: maximizeNodes,
 					},
 				},
 				// linkBinding: {
@@ -521,62 +526,38 @@
 					"path stroke='#000' stroke-width='1'"
 				);
 
-				// if (
-				// 	args.cnode.ppid != undefined &&
-				// 	cnodeData.married != undefined &&
-				// 	nodeData.married != undefined
-				// ) {
-				// 	console.log(nodeData);
-				// }
-				console.log(args.cnode.ppid);
-
 				if (
-					args.cnode.ppid != undefined &&
 					cnodeData.married != undefined &&
 					nodeData.married != undefined &&
-					nodeData.married == cnodeData.id
+					nodeData.married == cnodeData.id &&
+					cnodeData.married == nodeData.id
 				) {
+					args.html = args.html.replace(
+						'path',
+						"path stroke='#ff0000' stroke-width='3'"
+					);
 					args.html +=
 						'<use xlink:href="#heart" fill="red" x="' +
-						args.p.xa +
+						args.p.xc +
 						'" y="' +
-						args.p.ya +
-						'"/>';
-				} else if (
-					cnodeData.married != undefined &&
-					nodeData.married != undefined &&
-					nodeData.married == cnodeData.id
-				) {
-					args.html +=
-						'<use xlink:href="#heart" fill="red" x="' +
-						(args.p.xa + -70) +
-						'" y="' +
-						args.p.ya +
-						'"/>';
-					args.html +=
-						'<use xlink:href="#heart" fill="red" x="' +
-						(args.p.xa + 70) +
-						'" y="' +
-						args.p.ya +
+						args.p.yc +
 						'"/>';
 				}
 				if (
-					args.node.ppid != undefined &&
 					cnodeData.dating != undefined &&
 					nodeData.dating != undefined &&
-					nodeData.dating == cnodeData.id
+					nodeData.dating == cnodeData.id &&
+					cnodeData.dating == nodeData.id
 				) {
+					args.html = args.html.replace(
+						'path',
+						"path stroke='#0000ff' stroke-width='3'"
+					);
 					args.html +=
 						'<use xlink:href="#heart" fill="blue" x="' +
-						(args.p.xa + 70) +
+						args.p.xc +
 						'" y="' +
-						args.p.ya +
-						'"/>';
-					args.html +=
-						'<use xlink:href="#heart" fill="blue" x="' +
-						(args.p.xa + -70) +
-						'" y="' +
-						args.p.ya +
+						args.p.yc +
 						'"/>';
 				} else if (
 					cnodeData.divorced != undefined &&
@@ -588,42 +569,27 @@
 						'path',
 						"path stroke-dasharray='10, 5' stroke='#000'"
 					);
-				} else if (
+				}
+				if (
 					cnodeData.widow != undefined &&
 					cnodeData.widow.includes(args.node.id)
 				) {
 					args.html = args.html.replace(
 						'path',
-						"path stroke-dasharray='5, 7' stroke='#888' stroke-width='5'"
+						"path stroke-dasharray='20, 10, 5, 10' stroke='#888' stroke-width='5'"
 					);
 				}
 
-				// console.log(args);
-				// console.log(family.get(args.node.id));
-				// console.log(family.get(args.cnode.id));
-				// console.log(nodeData.pids.includes(cnodeData.id));
-
-				// if (
-				// 	nodeData.married != undefined &&
-				// 	nodeData.married.includes(args.cnode.id)
-				// ) {
-				// args.html +=
-				// 	'<text fill="black" style="font: bold 14px sans-serif;" x="' +
-				// 	(args.p.x + 13) +
-				// 	'" y="' +
-				// 	(args.p.y + 5) +
-				// 	'">TEST</text>';
-				// }
+				args.html +=
+					'<use xlink:href="#diamond" fill="#000" x="' +
+					args.p.xd +
+					'" y="' +
+					args.p.yd +
+					'"/>';
 			});
 
 			family.on('click', function (sender, args) {
-				// console.log(args);
-				minimzeNode(args.node);
-				// if (args.node.min) {
-				// 	sender.maximize(args.node.id);
-				// } else {
-				// 	sender.minimize(args.node.id);
-				// }
+				minMaxNode(args.node);
 				return false;
 			});
 
@@ -745,6 +711,39 @@
 				node.style.opacity = 1;
 			});
 
+			const addNodePIDS = (args) => {
+				if (args.married != '' && args.married != undefined) {
+					args.pids.push(args.married);
+				}
+				if (args.dating != '' && args.dating != undefined) {
+					if (args.dating > 1) {
+						for (
+							let datePartner = 0;
+							datePartner < args.dating.length;
+							datePartner++
+						) {
+							args.pids.push(datePartner);
+						}
+					} else args.pids.push(args.dating);
+				}
+				if (args.divorced != '' && args.divorced != undefined) {
+					if (args.divorced > 1) {
+						for (
+							let divorcePartner = 0;
+							divorcePartner < args.dating.length;
+							divorcePartner++
+						) {
+							args.pids.push(divorcePartner);
+						}
+					} else args.pids.push(args.divorced);
+				}
+			};
+
+			family.onNodeTreeMenuShow((args) => {
+				console.log(args);
+				// args: { node: object; nodes: object[] }
+			});
+
 			family.onUpdateNode((args) => {
 				console.log(args);
 				if (
@@ -759,7 +758,8 @@
 				if (args.addNodesData > 0) {
 					console.log('Node added!');
 					return;
-				} else if (
+				}
+				if (
 					args.addNodesData < 1 &&
 					(args.updateNodesData[0].lifestate != null ||
 						args.updateNodesData[0].lifestate != undefined)
@@ -769,14 +769,16 @@
 						args.updateNodesData[0].lifestate,
 					];
 				}
-				if (args.updateNodesData[0].widow != undefined) {
+				if (
+					args.updateNodesData[0] != undefined &&
+					args.updateNodesData[0].widow != undefined &&
+					args.updateNodesData[0].widow != '' &&
+					args.addNodesData < 1
+				) {
 					args.updateNodesData[0].tags.push('widow');
 				}
 
-				console.log(args.updateNodesData[0].tags);
-				// if (args.married != '' || args.dating != '' || args.divorced != '') {
-				// 	args.pids()
-				// };
+				// addNodePIDS(args);
 			});
 
 			// TESTING EDIT FORM TO SHOW IMMEDIATELY
@@ -851,7 +853,6 @@
 					pids: [7, 11, 14],
 					married: 11,
 					divorced: [14],
-					dating: [7],
 					mid: 2,
 					fid: 3,
 					gender: 'male',
@@ -865,7 +866,6 @@
 					id: 7,
 					name: 'Samson Stokes',
 					pids: [6],
-					dating: [6],
 					widow: [6],
 					mid: 5,
 					fid: 4,
@@ -905,6 +905,7 @@
 				{
 					id: 10,
 					name: 'Cherry',
+					widow: [3],
 					gender: 'female',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'ghost',

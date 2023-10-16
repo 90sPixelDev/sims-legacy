@@ -179,3 +179,11 @@ svg.sim .node.alien.widow {
 		color: #825f7c;
 	}
 }
+
+.textAreaFocus {
+	border-radius: 7px;
+	border: 1px solid lightgreen;
+}
+.textAreaFocus:focus {
+	outline-color: green;
+}

@@ -145,7 +145,7 @@
 					};
 				else
 					return {
-						html: `<label for="${id}" class="bft-form-field" style="top:-5px;color: #acacac;">${editElement.label}</label><textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="width: 100%;height: 70px;padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border-radius: 7px;border:1px solid lightgreen;" data-binding="${editElement.binding}">${value}</textarea>`,
+						html: `<label for="${id}" class="bft-form-field" style="top:-5px;color: #acacac;">${editElement.label}</label><textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" class="textAreaFocus" style="width: 100%;height: 70px;padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border-radius: 7px;border:1px solid lightgreen;" data-binding="${editElement.binding}">${value}</textarea>`,
 					};
 			};
 			FamilyTree.elements.descTextArea = (
@@ -172,7 +172,7 @@
 					};
 				else
 					return {
-						html: `<label for="${id}" class="bft-form-field" style="top:-5px;color: #acacac;">${editElement.label}</label> <textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="width: 100%;height: 150px;padding: 5px 10px; margin: 0 3px 3px 0;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border-radius: 7px;border:1px solid lightgreen" data-binding="${editElement.binding}">${value}</textarea>`,
+						html: `<label for="${id}" class="bft-form-field" style="top:-5px;color: #acacac;">${editElement.label}</label> <textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" class="textAreaFocus" style="width: 100%;height: 150px;padding: 5px 10px; margin: 0 3px 3px 0;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;" data-binding="${editElement.binding}">${value}</textarea>`,
 						id: id,
 						value: value,
 					};
@@ -609,16 +609,6 @@
 					text: 'Add partner',
 					color: 'white',
 				};
-				// args.menu.wife = {
-				// 	icon: FamilyTree.icon.wife(30, 30, 'pink'),
-				// 	text: 'Add wife',
-				// 	color: 'white',
-				// };
-				// args.menu.husband = {
-				// 	icon: FamilyTree.icon.husband(30, 30, 'lightblue'),
-				// 	text: 'Add husband',
-				// 	color: 'white',
-				// };
 				args.menu.father = {
 					icon: FamilyTree.icon.father(30, 30, 'blue'),
 					text: 'Add father',
@@ -737,6 +727,7 @@
 						}
 					} else args.pids.push(args.divorced);
 				}
+				console.log(args.pids);
 			};
 
 			family.onNodeTreeMenuShow((args) => {
@@ -778,7 +769,7 @@
 					args.updateNodesData[0].tags.push('widow');
 				}
 
-				// addNodePIDS(args);
+				addNodePIDS(args);
 			});
 
 			// TESTING EDIT FORM TO SHOW IMMEDIATELY

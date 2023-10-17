@@ -54,15 +54,15 @@
 			FamilyTree.templates.sim.field_0 =
 				'<text ' +
 				FamilyTree.attr.width +
-				'="195" style="font-size: 20px;font-weight:bold;" fill="black" x="105" y="26" text-anchor="left" data-text-overflow="ellipsis" >{val}</text>';
+				'="195" style="font-size: 20px;font-weight:bold;" x="105" y="26" text-anchor="left" data-text-overflow="ellipsis" >{val}</text>';
 			FamilyTree.templates.sim.field_1 =
 				'<text ' +
 				FamilyTree.attr.width +
-				'="180" style="font-size: 16px;" fill="#4d4d4d" x="105" y="60" text-anchor="left" data-text-overflow="ellipsis" >{val}</text>';
+				'="180" style="font-size: 16px;" x="105" y="60" text-anchor="left" data-text-overflow="ellipsis" >{val}</text>';
 			FamilyTree.templates.sim.field_6 =
 				'<text ' +
 				FamilyTree.attr.width +
-				' ="60" style="font-size: 12px;" fill="black" x="50" y="117" text-anchor="middle">{val}</text>';
+				' ="60" style="font-size: 12px;" fill="black" x="50" y="112" text-anchor="middle">{val}</text>';
 
 			// FamilyTree.elements.traitsArea = (
 			// 	data,
@@ -114,13 +114,12 @@
 			) => {
 				const id = FamilyTree.elements.generateId();
 				let value = data[editElement.binding];
-				console.log(value);
 
 				let rOnlyAttr = readOnly ? 'readonly' : '';
 				let rDisabledAttr = readOnly ? 'disabled' : '';
 
 				if (value) {
-					const traits = value.split('&');
+					const traits = value.split(',');
 
 					const liHolder = traits.map(
 						(trait) =>
@@ -177,6 +176,81 @@
 						value: value,
 					};
 			};
+			FamilyTree.elements.datingOptions = (
+				data,
+				editElement,
+				minWidth,
+				readOnly
+			) => {
+				const id = FamilyTree.elements.generateId();
+				let value = data[editElement.binding];
+
+				let rOnlyAttr = readOnly ? 'readonly' : '';
+				let rDisabledAttr = readOnly ? 'disabled' : '';
+
+				const nodes = Object.values(family.nodes);
+
+				const simSelection = nodes.map(
+					(simNode) =>
+						(simNode = {
+							id: simNode.id,
+							name: family
+								.get(simNode.id)
+								.name.toLowerCase(),
+						})
+				);
+
+				console.log(
+					simSelection.sort(function (a, b) {
+						if (a.name < b.name) {
+							return -1;
+						}
+						if (a.name > b.name) {
+							return 1;
+						}
+						return 0;
+					})
+				);
+
+				const simOptions = simSelection.map(
+					(sim) =>
+						`<option value="${sim.id}">${sim.name}</option>`
+				);
+
+				simOptions.unshift(`<option value=""></option>`);
+
+				const simOptionsHTML = simOptions
+					.join()
+					.replaceAll(',', '');
+
+				// console.log(simOptionsHTML);
+
+				/// !Works at filtering!
+				// let test = Object.values(family.nodes).filter(function (
+				// 	node
+				// ) {
+				// 	return node.id == data.id;
+				// });
+
+				// console.log(test);
+
+				if (value == undefined) value = '';
+				if (readOnly && !value) {
+					return {
+						html: '',
+					};
+				}
+				if (readOnly && value)
+					return {
+						html: `<div style="height:55px;display:flex;flex-direction:column;"><label for="${id}" class="bft-form-field" style="height:0;color: #acacac;">${editElement.label}</label><input type="text" ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:transparent;" data-binding="${editElement.binding}" value="${value}"></div>`,
+					};
+				else
+					return {
+						html: `<div style="height:55px;display:flex;flex-direction:column;"><label for="${id}" class="bft-form-field" style="height:0;color:#acacac;">${editElement.label}</label> <select ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="width:fit;padding:5px 0;margin: 0 3px 3px 0;font-family: Helvetica,'Segoe UI',Arial,sans-serif;" data-binding="${editElement.binding}">${simOptionsHTML}</select></div>`,
+						id: id,
+						value: value,
+					};
+			};
 
 			// CUSTOM TEMPLATE PART DEFINITIONS
 			FamilyTree.templates.sim.size = [325, 100];
@@ -186,7 +260,7 @@
 
 			FamilyTree.templates.sim.img_0 = `<line x1="100" y1="0" x2="100" y2="100" stroke-width="1.5" stroke="black"></line>
 							<clipPath id="ulaImg">
-									<rect width="100" height="100" x="0" y="0" r></rect>
+									<rect width="100" height="100" y="0" rx="5" x="0" y="0" r></rect>
 							</clipPath>
 							<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="0" y="0" width="100" height="100"></image>`;
 
@@ -197,7 +271,8 @@
 			FamilyTree.templates.sim_male.node =
 				'<rect x="0" y="0" height="{h}" width="{w}" rx="5" ry="5"></rect>' +
 				'<use xlink:href="#male" x="105" y="70" fill="grey" />' +
-				'<line x1="0" y1="20" x2="322.5" y2="20" stroke-width="35" stroke="#fff"></line>';
+				'<line x1="1" y1="20" x2="322.5" y2="20" stroke-width="35" stroke="#fff"></line>' +
+				'<rect x="0" y="90" height="25" width="100" rx="5" ry="5" style="fill:#fff;stroke:transparent;"></rect>';
 
 			/// FEMALE
 			FamilyTree.templates.sim_female = Object.assign(
@@ -208,12 +283,8 @@
 			FamilyTree.templates.sim_female.node =
 				'<rect x="0" y="0" height="{h}" width="{w}" rx="5" ry="5"></rect>' +
 				'<use xlink:href="#female" x="105" y="70" fill="grey"  />' +
-				'<line x1="0" y1="20" x2="322.5" y2="20" stroke-width="35" stroke="#fff"></line>';
-
-			FamilyTree.templates.sim_mermaid_female = Object.assign(
-				{},
-				FamilyTree.templates.sim
-			);
+				'<line x1="1" y1="20" x2="322.5" y2="20" stroke-width="35" stroke="#fff"></line>' +
+				'<rect x="0" y="90" height="25" width="100" rx="5" ry="5" style="fill:#fff;stroke:transparent;"></rect>';
 
 			FamilyTree.templates.sim.min = Object.assign(
 				{},
@@ -221,7 +292,8 @@
 			);
 			FamilyTree.templates.sim.min.size = [103, 103];
 			FamilyTree.templates.sim.min.node =
-				'<rect x="0" y="0" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>';
+				'<rect x="0" y="0" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>' +
+				'<rect x="0" y="90" height="25" width="100" rx="5" ry="5" style="fill:#fff;stroke:transparent;"></rect>';
 			FamilyTree.templates.sim.min.img_0 = `
 							<clipPath id="ulaImg">
 									<rect width="100" height="100" x="0" y="0"></rect>
@@ -230,19 +302,25 @@
 
 			FamilyTree.templates.sim.min.field_0 = '';
 			FamilyTree.templates.sim.min.field_1 = '';
+			FamilyTree.templates.sim.min.field_6 =
+				'<text ' +
+				FamilyTree.attr.width +
+				' ="60" style="font-size: 12px;" fill="black" x="50" y="117" text-anchor="middle">{val}</text>';
 
 			FamilyTree.templates.sim_male.min = Object.assign(
 				{},
 				FamilyTree.templates.sim.min
 			);
 			FamilyTree.templates.sim_male.min.node =
-				'<rect x="0" y="0" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>';
+				'<rect x="0" y="85" height="35" width="105" rx="5" ry="5" style="fill:#fff;stroke:transparent;"></rect>' +
+				'<rect x="0" y="0" rx="5" ry="5" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>';
 			FamilyTree.templates.sim_female.min = Object.assign(
 				{},
 				FamilyTree.templates.sim.min
 			);
 			FamilyTree.templates.sim_female.min.node =
-				'<rect x="0" y="0" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>';
+				'<rect x="0" y="85" height="35" width="105" rx="5" ry="5" style="fill:#fff;stroke:transparent;"></rect>' +
+				'<rect x="0" y="0" y="0" rx="5" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>';
 
 			// RIPPLE
 			FamilyTree.templates.sim.ripple = {
@@ -337,13 +415,12 @@
 					},
 				},
 				// linkBinding: {
-				// 	link_field_0: 'name',
+				// 	link_field_0: 'widow',
 				// },
 				toolbar: {
 					// layout: true,
 					zoom: true,
 					fit: true,
-					expandAll: true,
 					fullScreen: true,
 				},
 				nodeBinding: {
@@ -438,7 +515,7 @@
 							{
 								type: 'select',
 								options: [
-									{ value: '', text: '-' },
+									{ value: '', text: '' },
 									{ value: 'bi', text: 'bi' },
 									{
 										value: 'gay',
@@ -470,8 +547,13 @@
 							},
 						],
 						[
+							// {
+							// 	type: 'textbox',
+							// 	label: 'Dating:',
+							// 	binding: 'dating',
+							// },
 							{
-								type: 'textbox',
+								type: 'datingOptions',
 								label: 'Dating:',
 								binding: 'dating',
 							},
@@ -773,9 +855,9 @@
 			});
 
 			// TESTING EDIT FORM TO SHOW IMMEDIATELY
-			// family.on('init', function (sender) {
-			// 	sender.editUI.show(9, true);
-			// });
+			family.on('init', function (sender) {
+				sender.editUI.show(13, true);
+			});
 
 			family.load([
 				{
@@ -787,7 +869,7 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'human',
 					tags: ['human'],
-					traits: 'stubborn& selfish& crazy',
+					traits: 'stubborn, selfish, crazy',
 					desc: '',
 				},
 				{
@@ -799,7 +881,7 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'plantsim',
 					tags: ['plantsim'],
-					traits: 'ambitious& hot-headed',
+					traits: 'ambitious, hot-headed',
 					desc: '',
 				},
 				{
@@ -813,7 +895,7 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'spellcaster',
 					tags: ['spellcaster'],
-					traits: 'high-maintenance& clumsy',
+					traits: 'high-maintenance, clumsy',
 					desc: '',
 				},
 				{
@@ -823,7 +905,7 @@
 					gender: 'male',
 					lifestate: 'ghost',
 					tags: ['ghost'],
-					traits: 'dramatic& selfess',
+					traits: 'dramatic, selfess',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					desc: '',
 				},
@@ -832,7 +914,7 @@
 					name: 'Lois Sowle',
 					pids: [4],
 					gender: 'female',
-					traits: 'mean& jealous',
+					traits: 'mean, jealous',
 					lifestate: 'spellcaster',
 					tags: ['spellcaster'],
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
@@ -849,7 +931,7 @@
 					gender: 'male',
 					lifestate: 'human',
 					tags: ['human'],
-					traits: 'envious& calm& sassy& vengeful& petty& evil& crazy& psychotic& cat person& dramatic& crazy',
+					traits: 'envious, calm, sassy, vengeful, petty, evil, crazy, psychotic, cat person, dramatic, crazy',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					desc: 'Testing 1 2 3 .... More text to make it a bit longer',
 				},
@@ -863,7 +945,7 @@
 					gender: 'male',
 					lifestate: 'alien',
 					tags: ['alien', 'widow'],
-					traits: 'optimistic& mean',
+					traits: 'optimistic, mean',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					desc: '',
 				},
@@ -878,7 +960,7 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'mermaid',
 					tags: ['mermaid'],
-					traits: 'slob& evil',
+					traits: 'slob, evil',
 					desc: '',
 				},
 				{
@@ -890,7 +972,7 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'werewolf',
 					tags: ['werewolf'],
-					traits: 'art lover& cat person',
+					traits: 'art lover, cat person',
 					desc: '',
 				},
 				{
@@ -901,7 +983,7 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'ghost',
 					tags: ['ghost'],
-					traits: 'devious& prankster',
+					traits: 'devious, prankster',
 					desc: '',
 				},
 				{
@@ -912,7 +994,7 @@
 					gender: 'female',
 					lifestate: 'ghost',
 					tags: ['ghost'],
-					traits: 'crazy& petty& extra&',
+					traits: 'crazy, petty, extra,',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					desc: 'Testing 1 2 3 .... More text to make it a bit longer',
 				},
@@ -925,7 +1007,7 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'plantsim',
 					tags: ['plantsim'],
-					traits: 'stubborn& selfish& crazy',
+					traits: 'stubborn, selfish, crazy',
 					desc: '',
 				},
 				{
@@ -937,7 +1019,7 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'werewolf',
 					tags: ['werewolf'],
-					traits: 'stubborn& selfish& crazy',
+					traits: 'stubborn, selfish, crazy',
 					desc: '',
 				},
 				{
@@ -948,7 +1030,7 @@
 					gender: 'female',
 					lifestate: 'alien',
 					tags: ['alien'],
-					traits: 'optimistic& mean',
+					traits: 'optimistic, mean',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					desc: '',
 				},
@@ -960,7 +1042,7 @@
 					gender: 'female',
 					lifestate: 'alien',
 					tags: ['alien'],
-					traits: 'optimistic& mean',
+					traits: 'optimistic, mean',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					desc: '',
 				},
@@ -973,7 +1055,19 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'spellcaster',
 					tags: ['spellcaster'],
-					traits: 'slob& evil',
+					traits: 'slob, evil',
+					desc: '',
+				},
+				{
+					id: 17,
+					name: 'Lucas',
+					pids: [16],
+					married: 16,
+					gender: 'male',
+					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
+					lifestate: 'werewolf',
+					tags: ['werewolf'],
+					traits: 'slob, evil',
 					desc: '',
 				},
 			]);

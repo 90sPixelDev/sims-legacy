@@ -34,37 +34,66 @@ div.bft-light .bft-input > input:focus {
 }
 
 /* The colors of the node by lifestates */
-svg.sim .node.werewolf rect {
-	fill: #fff9c2;
-	stroke: #4a4a3a;
+svg.sim .node.werewolf {
+	fill: #4a4a3a;
+	& rect {
+		fill: #fff9c2;
+		stroke: #4a4a3a;
+	}
 }
-svg.sim .node.human rect {
-	fill: #c3ebd4;
-	stroke: #5f826e;
+svg.sim .node.human {
+	fill: #5f826e;
+	& rect {
+		fill: #c3ebd4;
+		stroke: #5f826e;
+	}
 }
-svg.sim .node.plantsim rect {
-	fill: #97cf9f;
-	stroke: #5c6e5e;
+svg.sim .node.plantsim {
+	fill: #5c6e5e;
+
+	& rect {
+		fill: #97cf9f;
+		stroke: #5c6e5e;
+	}
 }
-svg.sim .node.spellcaster rect {
-	fill: #d7c2ff;
-	stroke: #83778f;
+svg.sim .node.spellcaster {
+	fill: #83778f;
+	& rect {
+		fill: #d7c2ff;
+		stroke: #83778f;
+	}
 }
-svg.sim .node.vampire rect {
-	fill: #c4c4c4;
-	stroke: #747f8f;
+svg.sim .node.vampire {
+	fill: #747f8f;
+
+	& rect {
+		fill: #c4c4c4;
+		stroke: #747f8f;
+	}
 }
-svg.sim .node.mermaid rect {
-	fill: #bfd7ff;
-	stroke: #8b9bb7;
+svg.sim .node.mermaid {
+	fill: #8b9bb7;
+
+	& rect {
+		fill: #bfd7ff;
+		stroke: #8b9bb7;
+	}
 }
-svg.sim .node.ghost rect {
-	fill: #ebebeb;
-	stroke: #b8b8b8;
+svg.sim .node.ghost {
+	fill: #b8b8b8;
+
+	& rect {
+		fill: #ebebeb;
+		stroke: #b8b8b8;
+	}
 }
-svg.sim .node.alien rect {
-	fill: #ffccf6;
-	stroke: #825f7c;
+svg.sim .node.alien {
+	fill: #825f7c;
+
+	& rect {
+		fill: #ffccf6;
+		stroke: #825f7c;
+	}
 }
 svg.sim .node.werewolf.widow {
 	filter: brightness(60%);

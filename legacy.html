@@ -64,48 +64,6 @@
 				FamilyTree.attr.width +
 				' ="60" style="font-size: 12px;" fill="black" x="50" y="112" text-anchor="middle">{val}</text>';
 
-			// FamilyTree.elements.traitsArea = (
-			// 	data,
-			// 	editElement,
-			// 	minWidth,
-			// 	readOnly
-			// ) => {
-			// 	const id = FamilyTree.elements.generateId();
-			// 	let value = data[editElement.binding];
-			// 	console.log(value);
-
-			// 	let rOnlyAttr = readOnly ? 'readonly' : '';
-			// 	let rDisabledAttr = readOnly ? 'disabled' : '';
-
-			// 	if (value) {
-			// 		const traits = value.split(',');
-
-			// 		const liHolder = traits.map(
-			// 			(trait) =>
-			// 				`<li style="display:inline-block;background-color:lightgreen;color:darkgreen;padding:0 5px;margin:3px;border-radius:10px;text-align:center;">${trait}</li>`
-			// 		);
-
-			// 		const arrangedTraits = liHolder
-			// 			.join()
-			// 			.replaceAll(',', '')
-			// 			.trim();
-			// 		fixedTraits = arrangedTraits.replace(/\>\s/g, '>');
-			// 	}
-
-			// 	if (value == undefined) value = '';
-			// 	if (readOnly && !value) {
-			// 		return {
-			// 			html: '',
-			// 		};
-			// 	} else if (readOnly && value)
-			// 		return {
-			// 			html: `<label for="${id}" class="bft-form-field" style="top:-5px;color: #acacac;">${editElement.label}</label><ul id="${id}" name="${id}" style="width: 100%;height: 70px;padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:1px dotted lightgreen;border-radius: 7px;" data-binding="${editElement.binding}">${fixedTraits}</ul>`,
-			// 		};
-			// 	else
-			// 		return {
-			// 			html: `<label for="${id}" class="bft-form-field" style="top:-5px;color: #acacac;">${editElement.label}</label><textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="width: 100%;height: 70px;padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border-radius: 7px;border:1px solid lightgreen;" data-binding="${editElement.binding}">${value}</textarea>`,
-			// 		};
-			// };
 			FamilyTree.elements.traitsArea = (
 				data,
 				editElement,
@@ -140,11 +98,14 @@
 					};
 				} else if (readOnly && value)
 					return {
-						html: `<label for="${id}" class="bft-form-field" style="top:-5px;color: #acacac;">${editElement.label}</label><ul id="${id}" name="${id}" style="width: 100%;height: 70px;padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:1px dotted lightgreen;border-radius: 7px;" data-binding="${editElement.binding}">${fixedTraits}</ul>`,
+						html: `<div style="flex: 1 0 96%;min-width: 200px;;position:relative;"><div class="bft-form-field" style:""><label for="${id}" class="bft-form-field" style="position:absolute;top:0;color: #acacac;left:9px;">${editElement.label}</label><ul id="${id}" name="${id}" style="width: 94.25%;height: 70px;padding: 25px 10px 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:1px dotted lightgreen;border-radius: 7px;" data-binding="${editElement.binding}">${fixedTraits}</ul></div></div>`,
 					};
 				else
 					return {
-						html: `<label for="${id}" class="bft-form-field" style="top:-5px;color: #acacac;">${editElement.label}</label><textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" class="textAreaFocus" style="width: 100%;height: 70px;padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border-radius: 7px;border:1px solid lightgreen;" data-binding="${editElement.binding}">${value}</textarea>`,
+						html: `<div class="bft-form-field"><div class="bft-input" style="height:150px;width:100%;display:flex;flex-direction:column;">
+							<label for="${id}" class="bft-form-field" style="top:-1px;color: #acacac;font-">${editElement.label}</label>
+							<textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" class="textAreaFocus" style="height:100%;padding:20px 5px 4px 5px;;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;font-size:16px;color:#757575" data-binding="${editElement.binding}">${value}</textarea>
+						</div></div>`,
 					};
 			};
 			FamilyTree.elements.descTextArea = (
@@ -167,30 +128,34 @@
 				}
 				if (readOnly && value)
 					return {
-						html: `<label for="${id}" class="bft-form-field" style="top:-5px;color: #acacac;">${editElement.label}</label><textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="width: 100%;height: 100px;padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:1px dotted lightgreen;border-radius: 7px;" data-binding="${editElement.binding}">${value}</textarea>`,
+						html: `<div style="flex: 1 0 100%;min-width: 200px;;position:relative;margin-left:3px;"><label for="${id}" class="bft-form-field" style="position:absolute;top:0;color: #acacac;left:9px;">${editElement.label}</label><textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="width: 95%;height: 100px;padding: 30px 5px 10px 5px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:1px dotted lightgreen;border-radius: 7px;" data-binding="${editElement.binding}">${value}</textarea></div>`,
 					};
 				else
 					return {
-						html: `<label for="${id}" class="bft-form-field" style="top:-5px;color: #acacac;">${editElement.label}</label> <textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" class="textAreaFocus" style="width: 100%;height: 150px;padding: 5px 10px; margin: 0 3px 3px 0;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;" data-binding="${editElement.binding}">${value}</textarea>`,
+						html: `<div class="bft-form-field"><div class="bft-input" style="height:150px;width:100%;display:flex;flex-direction:column;">
+							<label for="${id}" class="bft-form-field" style="top:-1px;color: #acacac;font-">${editElement.label}</label>
+							<textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" class="textAreaFocus" style="height:100%;padding:20px 5px 4px 5px;;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;font-size:16px;color:#757575" data-binding="${editElement.binding}">${value}</textarea>
+						</div></div>`,
 						id: id,
 						value: value,
 					};
 			};
-			FamilyTree.elements.datingOptions = (
+			FamilyTree.elements.simOptions = (
 				data,
 				editElement,
 				minWidth,
 				readOnly
 			) => {
-				const id = FamilyTree.elements.generateId();
+				let id = FamilyTree.elements.generateId();
 				let value = data[editElement.binding];
+				let valueIsValid = value != undefined && value != '';
 
 				let rOnlyAttr = readOnly ? 'readonly' : '';
 				let rDisabledAttr = readOnly ? 'disabled' : '';
 
-				const nodes = Object.values(family.nodes);
+				let nodes = Object.values(family.nodes);
 
-				const simSelection = nodes.map(
+				let simSelection = nodes.map(
 					(simNode) =>
 						(simNode = {
 							id: simNode.id,
@@ -200,39 +165,32 @@
 						})
 				);
 
-				console.log(
-					simSelection.sort(function (a, b) {
-						if (a.name < b.name) {
-							return -1;
-						}
-						if (a.name > b.name) {
-							return 1;
-						}
-						return 0;
-					})
-				);
+				// Moving the chosen sim
+				if (valueIsValid) {
+					let findValIndex = (sim) => sim.id == value;
 
-				const simOptions = simSelection.map(
+					if (value != undefined && value != '') {
+						simSelection.unshift(
+							simSelection.splice(
+								simSelection.findIndex(findValIndex),
+								1
+							)[0]
+						);
+					}
+				}
+
+				// Turning the sim names with their ID values as html options
+				let simOptions = simSelection.map(
 					(sim) =>
 						`<option value="${sim.id}">${sim.name}</option>`
 				);
 
-				simOptions.unshift(`<option value=""></option>`);
+				// Make the current value show as default if there is something already chosen
+				if (valueIsValid)
+					simOptions.push(`<option value="">No One</option>`);
+				else simOptions.unshift(`<option value="">-</option>`);
 
-				const simOptionsHTML = simOptions
-					.join()
-					.replaceAll(',', '');
-
-				// console.log(simOptionsHTML);
-
-				/// !Works at filtering!
-				// let test = Object.values(family.nodes).filter(function (
-				// 	node
-				// ) {
-				// 	return node.id == data.id;
-				// });
-
-				// console.log(test);
+				let simOptionsHTML = simOptions.join().replaceAll(',', '');
 
 				if (value == undefined) value = '';
 				if (readOnly && !value) {
@@ -242,11 +200,11 @@
 				}
 				if (readOnly && value)
 					return {
-						html: `<div style="height:55px;display:flex;flex-direction:column;"><label for="${id}" class="bft-form-field" style="height:0;color: #acacac;">${editElement.label}</label><input type="text" ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:transparent;" data-binding="${editElement.binding}" value="${value}"></div>`,
+						html: `<div style="height:55px;display:flex;flex-direction:column;"><label for="${id}" class="bft-form-field" style="height:0;color: #acacac;">${editElement.label}</label><input type="text" ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="background-color:#fff;padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:transparent;" data-binding="${editElement.binding}" value="${value}"></div>`,
 					};
 				else
 					return {
-						html: `<div style="height:55px;display:flex;flex-direction:column;"><label for="${id}" class="bft-form-field" style="height:0;color:#acacac;">${editElement.label}</label> <select ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="width:fit;padding:5px 0;margin: 0 3px 3px 0;font-family: Helvetica,'Segoe UI',Arial,sans-serif;" data-binding="${editElement.binding}">${simOptionsHTML}</select></div>`,
+						html: `<div class="bft-input" style="width:49%;margin:3px 3px 1px 3px;"><label for="${id}" class="bft-form-field" style="top:-5px;">${editElement.label}</label> <select ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="border: 1px solid lightgreen;width:fit;padding:20px 5px 4px 5px;margin: 0 3px 3px 0;font-family: Helvetica,'Segoe UI',Arial,sans-serif;" data-binding="${editElement.binding}">${simOptionsHTML}</select></div>`,
 						id: id,
 						value: value,
 					};
@@ -542,46 +500,41 @@
 						[
 							{
 								type: 'descTextArea',
-								label: 'Description:',
+								label: 'Description',
 								binding: 'desc',
 							},
 						],
 						[
-							// {
-							// 	type: 'textbox',
-							// 	label: 'Dating:',
-							// 	binding: 'dating',
-							// },
 							{
-								type: 'datingOptions',
-								label: 'Dating:',
+								type: 'simOptions',
+								label: 'Dating',
 								binding: 'dating',
 							},
 							{
-								type: 'textbox',
-								label: 'Married:',
+								type: 'simOptions',
+								label: 'Married',
 								binding: 'married',
 							},
 							{
-								type: 'textbox',
-								label: 'Divorced With:',
+								type: 'simOptions',
+								label: 'Divorced',
 								binding: 'divorced',
 							},
 							{
-								type: 'textbox',
-								label: 'Widow:',
+								type: 'simOptions',
+								label: 'Widow',
 								binding: 'widow',
 							},
 						],
 						[
 							{
-								type: 'textbox',
-								label: 'Mother:',
+								type: 'simOptions',
+								label: 'Mother',
 								binding: 'mid',
 							},
 							{
-								type: 'textbox',
-								label: 'Father:',
+								type: 'simOptions',
+								label: 'Father',
 								binding: 'fid',
 							},
 						],
@@ -809,7 +762,6 @@
 						}
 					} else args.pids.push(args.divorced);
 				}
-				console.log(args.pids);
 			};
 
 			family.onNodeTreeMenuShow((args) => {
@@ -818,18 +770,13 @@
 			});
 
 			family.onUpdateNode((args) => {
-				console.log(args);
 				if (
 					args.removeNodeId != null ||
 					args.removeNodeId != undefined
 				) {
-					console.log(
-						`Succesfully Removed: ${args.removeNodeId}!`
-					);
 					return;
 				}
 				if (args.addNodesData > 0) {
-					console.log('Node added!');
 					return;
 				}
 				if (
@@ -837,7 +784,6 @@
 					(args.updateNodesData[0].lifestate != null ||
 						args.updateNodesData[0].lifestate != undefined)
 				) {
-					console.log('Updated tag to lifestate!');
 					args.updateNodesData[0].tags = [
 						args.updateNodesData[0].lifestate,
 					];
@@ -856,7 +802,7 @@
 
 			// TESTING EDIT FORM TO SHOW IMMEDIATELY
 			family.on('init', function (sender) {
-				sender.editUI.show(13, true);
+				sender.editUI.show(6, true);
 			});
 
 			family.load([
@@ -1055,18 +1001,6 @@
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
 					lifestate: 'spellcaster',
 					tags: ['spellcaster'],
-					traits: 'slob, evil',
-					desc: '',
-				},
-				{
-					id: 17,
-					name: 'Lucas',
-					pids: [16],
-					married: 16,
-					gender: 'male',
-					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
-					lifestate: 'werewolf',
-					tags: ['werewolf'],
 					traits: 'slob, evil',
 					desc: '',
 				},

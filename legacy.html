@@ -59,7 +59,7 @@
 				'<text ' +
 				FamilyTree.attr.width +
 				'="180" style="font-size: 16px;" x="105" y="60" text-anchor="left" data-text-overflow="ellipsis" >{val}</text>';
-			FamilyTree.templates.sim.field_6 =
+			FamilyTree.templates.sim.field_8 =
 				'<text ' +
 				FamilyTree.attr.width +
 				' ="60" style="font-size: 12px;" fill="black" x="50" y="112" text-anchor="middle">{val}</text>';
@@ -98,13 +98,13 @@
 					};
 				} else if (readOnly && value)
 					return {
-						html: `<div style="flex: 1 0 96%;min-width: 200px;;position:relative;"><div class="bft-form-field" style:""><label for="${id}" class="bft-form-field" style="position:absolute;top:0;color: #acacac;left:9px;">${editElement.label}</label><ul id="${id}" name="${id}" style="width: 94.25%;height: 70px;padding: 25px 10px 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:1px dotted lightgreen;border-radius: 7px;" data-binding="${editElement.binding}">${fixedTraits}</ul></div></div>`,
+						html: `<div style="flex: 1 0 96%;min-width: 200px;;position:relative;"><div class="bft-form-field" style:""><label for="${id}" class="bft-form-field" style="position:absolute;top:0;color: #acacac;left:9px;">${editElement.label}</label><ul id="${id}" name="${id}" style="width: 94.25%;height: 100px;padding: 25px 10px 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:1px dotted lightgreen;border-radius: 7px;" data-binding="${editElement.binding}">${fixedTraits}</ul></div></div>`,
 					};
 				else
 					return {
-						html: `<div class="bft-form-field"><div class="bft-input" style="height:150px;width:100%;display:flex;flex-direction:column;">
-							<label for="${id}" class="bft-form-field" style="top:-1px;color: #acacac;font-">${editElement.label}</label>
-							<textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" class="textAreaFocus" style="height:100%;padding:20px 5px 4px 5px;;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;font-size:16px;color:#757575" data-binding="${editElement.binding}">${value}</textarea>
+						html: `<div class="bft-form-field"><div class="bft-input" style="height:100px;width:100%;display:flex;flex-direction:column;">
+							<label for="${id}" class="bft-form-field" style="top:-3px;color: #acacac;font-">${editElement.label}</label>
+							<textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" class="textAreaFocus" style="height:100px;padding:20px 5px 4px 5px;;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;font-size:16px;color:#757575" data-binding="${editElement.binding}">${value}</textarea>
 						</div></div>`,
 					};
 			};
@@ -132,9 +132,9 @@
 					};
 				else
 					return {
-						html: `<div class="bft-form-field"><div class="bft-input" style="height:150px;width:100%;display:flex;flex-direction:column;">
-							<label for="${id}" class="bft-form-field" style="top:-1px;color: #acacac;font-">${editElement.label}</label>
-							<textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" class="textAreaFocus" style="height:100%;padding:20px 5px 4px 5px;;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;font-size:16px;color:#757575" data-binding="${editElement.binding}">${value}</textarea>
+						html: `<div class="bft-form-field"><div class="bft-input" style="height:100px;width:100%;display:flex;flex-direction:column;">
+							<label for="${id}" class="bft-form-field" style="top:-4px;color: #acacac;font-">${editElement.label}</label>
+							<textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" class="textAreaFocus" style="height:100px;padding:20px 5px 4px 5px;;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;font-size:16px;color:#757575" data-binding="${editElement.binding}">${value}</textarea>
 						</div></div>`,
 						id: id,
 						value: value,
@@ -155,15 +155,33 @@
 
 				let nodes = Object.values(family.nodes);
 
-				let simSelection = nodes.map(
-					(simNode) =>
-						(simNode = {
-							id: simNode.id,
-							name: family
-								.get(simNode.id)
-								.name.toLowerCase(),
-						})
-				);
+				// Mapping to an array the Sims and their needed info!
+				let simSelection = nodes.map((simNode) => {
+					let simName = family.get(simNode.id).name;
+					let simPhoto = family.get(simNode.id).photo;
+					if (simName == undefined || simName == '') {
+						simName = '';
+					} else simName = simName.toLowerCase();
+					if (simPhoto == undefined || simPhoto == '') {
+						simPhoto = '';
+					} else simName.toLowerCase();
+					return (simNode = {
+						id: simNode.id,
+						name: simName,
+						photo: simPhoto,
+					});
+				});
+
+				// Sorting Alphabetically by Name!
+				simSelection.sort(function (a, b) {
+					if (a.name < b.name) {
+						return -1;
+					}
+					if (a.name > b.name) {
+						return 1;
+					}
+					return 0;
+				});
 
 				// Moving the chosen sim
 				if (valueIsValid) {
@@ -182,7 +200,7 @@
 				// Turning the sim names with their ID values as html options
 				let simOptions = simSelection.map(
 					(sim) =>
-						`<option value="${sim.id}">${sim.name}</option>`
+						`<option value="${sim.id}" style="background-image:url(${sim.photo});height:50px;">${sim.name}</option>`
 				);
 
 				// Make the current value show as default if there is something already chosen
@@ -264,7 +282,7 @@
 
 			FamilyTree.templates.sim.min.field_0 = '';
 			FamilyTree.templates.sim.min.field_1 = '';
-			FamilyTree.templates.sim.min.field_6 =
+			FamilyTree.templates.sim.min.field_8 =
 				'<text ' +
 				FamilyTree.attr.width +
 				' ="60" style="font-size: 12px;" fill="black" x="50" y="117" text-anchor="middle">{val}</text>';
@@ -388,17 +406,18 @@
 				nodeBinding: {
 					field_0: 'name',
 					field_1: 'lifestate',
-					field_2: 'traits',
-					field_3: 'desc',
-					field_4: 'gender',
-					field_5: 'orientation',
-					field_6: 'id',
-					field_7: 'married',
-					field_8: 'dating',
-					field_9: 'divorced',
-					field_10: 'widow',
-					field_11: 'mid',
-					field_12: 'fid',
+					field_3: 'aspiration',
+					field_4: 'traits',
+					field_5: 'desc',
+					field_6: 'gender',
+					field_7: 'orientation',
+					field_8: 'id',
+					field_9: 'married',
+					field_10: 'dating',
+					field_11: 'divorced',
+					field_12: 'widow',
+					field_13: 'mid',
+					field_14: 'fid',
 					img_0: 'photo',
 				},
 				// editUI: new editForm(),
@@ -495,12 +514,23 @@
 								label: 'Sexual Orientation',
 								binding: 'orientation',
 							},
+							{
+								type: 'select',
+								options: [
+									{ value: '', text: '' },
+									{ value: 'test', text: 'Test' },
+								],
+								label: 'Aspiration',
+								binding: 'aspiration',
+							},
 						],
-						{
-							type: 'traitsArea',
-							label: 'Traits',
-							binding: 'traits',
-						},
+						[
+							{
+								type: 'traitsArea',
+								label: 'Traits',
+								binding: 'traits',
+							},
+						],
 						[
 							{
 								type: 'descTextArea',
@@ -544,7 +574,7 @@
 						],
 						{
 							type: 'textbox',
-							label: 'Photo Url',
+							label: 'Portrait Location',
 							binding: 'photo',
 							// btn: 'Upload',
 						},
@@ -806,7 +836,7 @@
 
 			// TESTING EDIT FORM TO SHOW IMMEDIATELY
 			family.on('init', function (sender) {
-				sender.editUI.show(6, true);
+				sender.editUI.show(6, false);
 			});
 
 			family.load([
@@ -878,8 +908,9 @@
 					divorced: [14],
 					mid: 2,
 					fid: 3,
-					gender: 'male',
 					lifestate: 'human',
+					gender: 'male',
+					aspiration: 'Olympic Swimmer',
 					tags: ['human'],
 					traits: 'envious, calm, sassy, vengeful, petty, evil, crazy, psychotic, cat person, dramatic, crazy',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',

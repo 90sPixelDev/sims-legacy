@@ -128,7 +128,7 @@
 				}
 				if (readOnly && value)
 					return {
-						html: `<div style="flex: 1 0 100%;min-width: 200px;;position:relative;margin-left:3px;"><label for="${id}" class="bft-form-field" style="position:absolute;top:0;color: #acacac;left:9px;">${editElement.label}</label><textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="width: 95%;height: 100px;padding: 30px 5px 10px 5px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:1px dotted lightgreen;border-radius: 7px;" data-binding="${editElement.binding}">${value}</textarea></div>`,
+						html: `<div class="bft-form-field" style="flex: 1 0 100%;min-width: 200px;;position:relative;margin-left:3px;margin-top:3px;"><label for="${id}" class="bft-form-field" style="position:absolute;top:0;left:6px;color: #acacac;">${editElement.label}</label><textarea ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="width: 95%;height: 100px;padding: 30px 5px 10px 5px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:1px dotted lightgreen;border-radius: 7px;" data-binding="${editElement.binding}">${value}</textarea></div>`,
 					};
 				else
 					return {
@@ -200,7 +200,11 @@
 				}
 				if (readOnly && value)
 					return {
-						html: `<div style="height:55px;display:flex;flex-direction:column;"><label for="${id}" class="bft-form-field" style="height:0;color: #acacac;">${editElement.label}</label><input type="text" ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="background-color:#fff;padding: 5px 10px; margin: 0 3px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:transparent;" data-binding="${editElement.binding}" value="${value}"></div>`,
+						html: `<div style="width:50%;height:55px;position:relative;"><label for="${id}" class="bft-form-field" style="position:absolute;top:0;padding: 0 10px;color:#acacac;">${
+							editElement.label
+						}</label><input type="text" ${rDisabledAttr} ${rOnlyAttr} id="${id}" name="${id}" style="background-color:#fff;padding: 5px 10px; margin: 0 3px;padding: 28px 10px 2px 9px;resize:none;font-family: Helvetica,'Segoe UI',Arial,sans-serif;border:transparent;" data-binding="${
+							editElement.binding
+						}" value="${family.get(value).name}"></div>`,
 					};
 				else
 					return {

@@ -62,7 +62,7 @@
 			FamilyTree.templates.sim.field_8 =
 				'<text ' +
 				FamilyTree.attr.width +
-				' ="60" style="font-size: 12px;" fill="black" x="50" y="112" text-anchor="middle">{val}</text>';
+				' ="60" fill="#555" style="font-size: 12px;" x="50" y="112" text-anchor="middle">{val}</text>';
 
 			FamilyTree.elements.traitsArea = (
 				data,
@@ -172,8 +172,16 @@
 					});
 				});
 
+				// Reducing to make sure sim cannot have a relation to themselves!
+				let simList = simSelection.reduce(function (info, sim) {
+					if (sim.id != data.id) {
+						info.push(sim);
+					}
+					return info;
+				}, []);
+
 				// Sorting Alphabetically by Name!
-				simSelection.sort(function (a, b) {
+				simList.sort(function (a, b) {
 					if (a.name < b.name) {
 						return -1;
 					}
@@ -188,9 +196,9 @@
 					let findValIndex = (sim) => sim.id == value;
 
 					if (value != undefined && value != '') {
-						simSelection.unshift(
-							simSelection.splice(
-								simSelection.findIndex(findValIndex),
+						simList.unshift(
+							simList.splice(
+								simList.findIndex(findValIndex),
 								1
 							)[0]
 						);
@@ -198,7 +206,7 @@
 				}
 
 				// Turning the sim names with their ID values as html options
-				let simOptions = simSelection.map(
+				let simOptions = simList.map(
 					(sim) =>
 						`<option value="${sim.id}" style="background-image:url(${sim.photo});height:50px;">${sim.name}</option>`
 				);
@@ -252,7 +260,7 @@
 				'<rect x="0" y="0" height="{h}" width="{w}" rx="5" ry="5"></rect>' +
 				'<use xlink:href="#male" x="105" y="70" fill="grey" />' +
 				'<line x1="1" y1="20" x2="322.5" y2="20" stroke-width="35" stroke="#fff"></line>' +
-				'<rect x="0" y="90" height="25" width="100" rx="5" ry="5" style="fill:#fff;stroke:transparent;"></rect>';
+				'<rect x="0" y="90" height="25" width="100" rx="5" ry="5" style="fill:#fff;stroke:lightgray;stroke-width:1px"></rect>';
 
 			/// FEMALE
 			FamilyTree.templates.sim_female = Object.assign(
@@ -264,7 +272,7 @@
 				'<rect x="0" y="0" height="{h}" width="{w}" rx="5" ry="5"></rect>' +
 				'<use xlink:href="#female" x="105" y="70" fill="grey"  />' +
 				'<line x1="1" y1="20" x2="322.5" y2="20" stroke-width="35" stroke="#fff"></line>' +
-				'<rect x="0" y="90" height="25" width="100" rx="5" ry="5" style="fill:#fff;stroke:transparent;"></rect>';
+				'<rect x="0" y="90" height="25" width="100" rx="5" ry="5" style="fill:#fff;stroke:lightgray;stroke-width:1px"></rect>';
 
 			FamilyTree.templates.sim.min = Object.assign(
 				{},
@@ -273,7 +281,7 @@
 			FamilyTree.templates.sim.min.size = [103, 103];
 			FamilyTree.templates.sim.min.node =
 				'<rect x="0" y="0" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>' +
-				'<rect x="0" y="90" height="25" width="100" rx="5" ry="5" style="fill:#fff;stroke:transparent;"></rect>';
+				'<rect x="0" y="90" height="25" width="100" rx="5" ry="5" style="fill:#fff;stroke:lightgray;stroke-width:1px"></rect>';
 			FamilyTree.templates.sim.min.img_0 = `
 							<clipPath id="ulaImg">
 									<rect width="100" height="100" x="0" y="0"></rect>
@@ -285,21 +293,21 @@
 			FamilyTree.templates.sim.min.field_8 =
 				'<text ' +
 				FamilyTree.attr.width +
-				' ="60" style="font-size: 12px;" fill="black" x="50" y="117" text-anchor="middle">{val}</text>';
+				' ="60" style="font-size: 12px;" fill="#555" x="50" y="117" text-anchor="middle">{val}</text>';
 
 			FamilyTree.templates.sim_male.min = Object.assign(
 				{},
 				FamilyTree.templates.sim.min
 			);
 			FamilyTree.templates.sim_male.min.node =
-				'<rect x="0" y="85" height="35" width="105" rx="5" ry="5" style="fill:#fff;stroke:transparent;"></rect>' +
+				'<rect x="0" y="85" height="35" width="105" rx="5" ry="5" style="fill:#fff;stroke:lightgray;stroke-width:1px"></rect>' +
 				'<rect x="0" y="0" rx="5" ry="5" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>';
 			FamilyTree.templates.sim_female.min = Object.assign(
 				{},
 				FamilyTree.templates.sim.min
 			);
 			FamilyTree.templates.sim_female.min.node =
-				'<rect x="0" y="85" height="35" width="105" rx="5" ry="5" style="fill:#fff;stroke:transparent;"></rect>' +
+				'<rect x="0" y="85" height="35" width="105" rx="5" ry="5" style="fill:#fff;stroke:lightgray;stroke-width:1px"></rect>' +
 				'<rect x="0" y="0" y="0" rx="5" height="105" width="105" stroke-width="1" fill="#darkseagreen" stroke="#darkgreen"></rect>';
 
 			// RIPPLE
@@ -518,7 +526,38 @@
 								type: 'select',
 								options: [
 									{ value: '', text: '' },
-									{ value: 'test', text: 'Test' },
+									{
+										value: 'Bestselling Author',
+										text: 'Bestselling Author',
+									},
+									{
+										value: 'Bodybuilder',
+										text: 'Bodybuilder',
+									},
+									{
+										value: 'Championship Rider',
+										text: 'Championship Rider',
+									},
+									{
+										value: 'Extreme Sports Enthusiast',
+										text: 'Extreme Sports Enthusiast',
+									},
+									{
+										value: 'Friend of the Animals',
+										text: 'Friend of the Animals',
+									},
+									{
+										value: 'Musical Genius',
+										text: 'Musical Genius',
+									},
+									{
+										value: 'Painter Extraordinaire',
+										text: 'Painter Extraordinaire',
+									},
+									{
+										value: 'The Positivity Challenge',
+										text: 'The Positivity Challenge',
+									},
 								],
 								label: 'Aspiration',
 								binding: 'aspiration',
@@ -814,7 +853,7 @@
 					return;
 				}
 				if (
-					args.addNodesData < 1 &&
+					args.addNodesData == 0 &&
 					(args.updateNodesData[0].lifestate != null ||
 						args.updateNodesData[0].lifestate != undefined)
 				) {
@@ -825,19 +864,18 @@
 				if (
 					args.updateNodesData[0] != undefined &&
 					args.updateNodesData[0].widow != undefined &&
-					args.updateNodesData[0].widow != '' &&
-					args.addNodesData < 1
+					args.updateNodesData[0].widow != ''
 				) {
 					args.updateNodesData[0].tags.push('widow');
 				}
 
-				addNodePIDS(args);
+				// addNodePIDS(args);
 			});
 
 			// TESTING EDIT FORM TO SHOW IMMEDIATELY
-			family.on('init', function (sender) {
-				sender.editUI.show(6, false);
-			});
+			// family.on('init', function (sender) {
+			// 	sender.editUI.show(6, false);
+			// });
 
 			family.load([
 				{
@@ -959,6 +997,7 @@
 				{
 					id: 10,
 					name: 'Cherry',
+					pids: [3],
 					widow: [3],
 					gender: 'female',
 					photo: 'photos/0d853356-550c-428c-8a22-182b09e633dd.png',
